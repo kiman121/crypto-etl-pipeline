@@ -1,0 +1,28 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+
+# Environment variables file (don't push .env!)
+.env
+
+# Database files (e.g., SQLite, PostgreSQL dump, etc.)
+*.db
+output/*.db
+
+# Log files
+*.log
+logger.log
+
+# Output data (if not needed in version control)
+output/data.csv
+
+# Python package distribution
+*.egg
+*.egg-info
+dist/
+build/
