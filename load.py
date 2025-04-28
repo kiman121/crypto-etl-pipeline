@@ -1,6 +1,7 @@
 import pandas as pd
 from db import insert_data
 from logger import logger
+import os
 
 def save_to_csv(df):
   '''
@@ -16,7 +17,6 @@ def save_to_csv(df):
   # Log the success message with the file path
   logger.info(f'Data saved to CSV at {os.getenv("CSV_PATH")}')
 
-
 def save_to_db(df):
   '''
   Saves the cleaned DataFrame to the SQLite database.
@@ -31,4 +31,3 @@ def save_to_db(df):
   insert_data(df)
   # Log the success message indicating data has been saved
   logger.info('Data saved to SQLite database')
-  
