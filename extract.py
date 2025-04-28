@@ -5,7 +5,7 @@ from logger import logger
 
 load_dotenv()
 
-def fetch_crypto_data():
+def fetch_crypto_data(currency):
   '''
   Fetch cryptocurrency data from the API.
 
@@ -24,7 +24,7 @@ def fetch_crypto_data():
 
   # Define the query parameters for the API request
   params = {
-    'vs_currency': 'usd',  # Currency to convert prices to
+    'vs_currency': currency,  # Currency to convert prices to
     'order': 'market_cap_desc',  # Order by market cap in descending order
     'per_page': 10,  # Number of results per page
     'page': 1,  # Page number to fetch
