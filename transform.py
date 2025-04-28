@@ -17,6 +17,7 @@ def clean_crypto_data(raw_data):
   cleaned_df = df[['id', 'symbol', 'current_price', 'market_cap', 'last_updated']]
   
   # Convert the 'last_updated' column to datetime format
-  cleaned_df['last_updated'] = pd.to_datetime(cleaned_df['last_updated'])
+  cleaned_df.loc[:, 'last_updated'] = pd.to_datetime(cleaned_df['last_updated'])
+
   
   return cleaned_df
