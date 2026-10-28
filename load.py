@@ -1,21 +1,24 @@
-import pandas as pd
 from db import insert_data
 from logger import logger
 import os
 
+def csv_path():
+  '''
+  OUTPUT_CSV is the documented path. CSV_PATH is still accepted.
+  '''
+  return os.getenv('OUTPUT_CSV') or os.getenv('CSV_PATH') or 'output/data.csv'
+
+
 def save_to_csv(df):
   '''
-  Saves the given DataFrame to a CSV file.
-
-  The file path is retrieved from the environment variable 'CSV_PATH'.
-
-  Args:
-    df (pandas.DataFrame): The DataFrame to be saved as a CSV file.
+  Saves the latest snapshot to a CSV file, replacing the previous file.
   '''
-  # Save the DataFrame to a CSV file without including the index
-  df.to_csv(os.getenv('CSV_PATH'), index=False)
-  # Log the success message with the file path
-  logger.info(f'Data saved to CSV at {os.getenv("CSV_PATH")}')
+  path = csv_path()
+  parent = os.path.dirname(path)
+  if parent:
+    os.makedirs(parent, exist_ok=True)
+  df.to_csv(path, index=False)
+  logger.info(f'Data saved to CSV at {path}')
 
 def save_to_db(df):
   '''

@@ -6,6 +6,7 @@ __pycache__/
 # Virtual environment
 venv/
 env/
+.venv/
 
 # Environment variables file (don't push .env!)
 .env
@@ -17,6 +18,7 @@ output/*.db
 # Log files
 *.log
 logger.log
+.pytest_cache/
 
 # Output data (if not needed in version control)
 output/data.csv

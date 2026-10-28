@@ -20,7 +20,7 @@ def fetch_crypto_data(currency):
     requests.exceptions.RequestException: If there is an error during the API request.
   '''
   # Get the API URL from environment variables
-  url = os.getenv('API_URL')
+  url = os.getenv('API_URL') or 'https://api.coingecko.com/api/v3/coins/markets'
 
   # Define the query parameters for the API request
   params = {

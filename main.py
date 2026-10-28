@@ -30,8 +30,8 @@ def run_etl(currency='usd'):
     # Log success message
     logger.info('ETL process completed successfully')
   except Exception as e:
-    # Log error message if ETL process fails
     logger.error(f'ETL process failed: {e}')
+    raise
 
 def parse_args():
   '''
@@ -54,13 +54,20 @@ def parse_args():
       default='usd', 
       help='Currency to fetch data in (default: usd)'
   )
+  parser.add_argument(
+      '--every-minutes',
+      type=int,
+      default=0,
+      help='Run on a loop. 0 runs once and exits (default: 0)'
+  )
   
   # Parse and return the command-line arguments
   return parser.parse_args()
 
 if __name__ == '__main__':
-  # Parse command-line arguments
   args = parse_args()
-  
-  # Run the ETL process with the specified currency
-  run_etl(currency=args.currency)
+  if args.every_minutes and args.every_minutes > 0:
+    from schedule import run_on_interval
+    run_on_interval(args.every_minutes, lambda: run_etl(currency=args.currency))
+  else:
+    run_etl(currency=args.currency)

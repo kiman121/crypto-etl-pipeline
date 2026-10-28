@@ -1,0 +1,18 @@
+[
+  {
+    "id": "bitcoin",
+    "symbol": "btc",
+    "current_price": 64000,
+    "market_cap": 1200000000000,
+    "last_updated": "2026-10-28T06:00:00.000Z",
+    "name": "Bitcoin"
+  },
+  {
+    "id": "ethereum",
+    "symbol": "eth",
+    "current_price": null,
+    "market_cap": 400000000000,
+    "last_updated": "2026-10-28T06:00:00.000Z",
+    "name": "Ethereum"
+  }
+]

@@ -1,47 +1,37 @@
-# Python ETL Pipeline - Crypto Data
+# Crypto ETL pipeline
 
-This project demonstrates an ETL pipeline for extracting cryptocurrency data from the CoinGecko API, transforming it, and saving it to both CSV and SQLite.
+Python ETL for a public market API. One run fetches the top coins, keeps the fields the record needs, and stores them. Run it again the same day and the price is updated in place. The next day is a new row.
 
-## Features
+This is the public sample of the pipeline shape I use at work: fetch, parse into a record, load, and run on a schedule. The source here is CoinGecko. The client work stays in the client repository.
 
-- **Extract**: Fetch real-time cryptocurrency data (e.g., Bitcoin, Ethereum) from the CoinGecko API.
-- **Transform**: Clean and structure the data, including handling missing values and converting types.
-- **Load**: Store the data in both a SQLite database and a CSV file.
-- **Error Handling**: Implement logging for tracking activity and errors.
-- **Command-Line Arguments**: Support for specifying the currency (USD or other) through command-line arguments.
+## What a run proves
 
-## Technologies Used
-
-- **Python**
-- **pandas**: For data processing and transformation.
-- **sqlite3**: For storing processed data in an SQLite database.
-- **requests**: For fetching data from the CoinGecko API.
-- **logging**: For activity tracking and error handling.
+- Extract from an HTTP API (`extract.py`)
+- Transform to a stable record: id, symbol, price, market cap, timestamp, snapshot day (`transform.py`)
+- Load the latest snapshot to CSV, and one row per coin per day to SQLite (`load.py`, `db.py`)
+- A second load of the same coin and day does not insert a duplicate
+- `--every-minutes` repeats the run
+- `tests/test_pipeline.py` runs against a saved API fixture, with no network
 
 ## Setup
 
-1. Install dependencies:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+cp .env.example .env
+```
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+`.env` is optional. Without it, the pipeline uses the CoinGecko markets URL, `output/etl_pipeline.db`, and `output/data.csv`.
 
-2. Create `.env` file with the following content:
+## Run
 
-   ```
-   API_URL=https://api.coingecko.com/api/v3/coins/markets
-   DATABASE_PATH=output/etl_pipeline.db
-   OUTPUT_CSV=output/data.csv
-   ```
+```bash
+python main.py --currency usd
+python main.py --every-minutes 60
+pytest
+```
 
-3. Run the ETL pipeline:
+CoinGecko's public API is rate limited. The tests do not call it.
 
-   ```
-   python main.py
-   ```
-
-   Alternatively, you can specify the currency (USD or other) using a command-line argument:
-
-   ```
-   python main.py --currency usd
-   ```
+If you already have a database from the previous version of this repo, the first new load renames that table to `crypto_prices_legacy` and starts the daily table beside it.
